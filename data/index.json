@@ -1,0 +1,498 @@
+{
+  "generatedAt": "2026-09-24T15:07:41.626Z",
+  "tickers": [
+    {
+      "ticker": "AAPL",
+      "file": "AAPL.json",
+      "stock": {
+        "symbol": "AAPL",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3477
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "apple-xstock",
+          "symbol": "AAPLX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        },
+        {
+          "issuer": "ondo",
+          "id": "apple-ondo-tokenized-stock",
+          "symbol": "AAPLON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "TSLA",
+      "file": "TSLA.json",
+      "stock": {
+        "symbol": "TSLA",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3477
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "tesla-xstock",
+          "symbol": "TSLAX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        },
+        {
+          "issuer": "ondo",
+          "id": "tesla-ondo-tokenized-stock",
+          "symbol": "TSLAON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "NVDA",
+      "file": "NVDA.json",
+      "stock": {
+        "symbol": "NVDA",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3477
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "nvidia-xstock",
+          "symbol": "NVDAX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        },
+        {
+          "issuer": "ondo",
+          "id": "nvidia-ondo-tokenized-stock",
+          "symbol": "NVDAON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "MSFT",
+      "file": "MSFT.json",
+      "stock": {
+        "symbol": "MSFT",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3477
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "microsoft-xstock",
+          "symbol": "MSFTX",
+          "firstTime": "2025-09-29T13:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8607
+        },
+        {
+          "issuer": "ondo",
+          "id": "microsoft-ondo-tokenized-stock",
+          "symbol": "MSFTON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "GOOGL",
+      "file": "GOOGL.json",
+      "stock": {
+        "symbol": "GOOGL",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3477
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "alphabet-xstock",
+          "symbol": "GOOGLX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        },
+        {
+          "issuer": "ondo",
+          "id": "alphabet-class-a-ondo-tokenized-stock",
+          "symbol": "GOOGLON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T14:00:00.000Z",
+          "count": 8735
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "AMZN",
+      "file": "AMZN.json",
+      "stock": {
+        "symbol": "AMZN",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "amazon-xstock",
+          "symbol": "AMZNX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "amazon-ondo-tokenized-stock",
+          "symbol": "AMZNON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "META",
+      "file": "META.json",
+      "stock": {
+        "symbol": "META",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "meta-xstock",
+          "symbol": "METAX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "meta-platforms-ondo-tokenized-stock",
+          "symbol": "METAON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "NFLX",
+      "file": "NFLX.json",
+      "stock": {
+        "symbol": "NFLX",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "netflix-xstock",
+          "symbol": "NFLXX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 7756
+        },
+        {
+          "issuer": "ondo",
+          "id": "netflix-ondo-tokenized-stock",
+          "symbol": "NFLXON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8711
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "MCD",
+      "file": "MCD.json",
+      "stock": {
+        "symbol": "MCD",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "mcdonald-s-xstock",
+          "symbol": "MCDX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "mcdonald-s-ondo-tokenized-stock",
+          "symbol": "MCDON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "MU",
+      "file": "MU.json",
+      "stock": {
+        "symbol": "MU",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "micron-technology-xstock",
+          "symbol": "MUX",
+          "firstTime": "2026-06-04T04:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 2421
+        },
+        {
+          "issuer": "ondo",
+          "id": "micron-technology-ondo-tokenized-stock",
+          "symbol": "MUON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8422
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "COIN",
+      "file": "COIN.json",
+      "stock": {
+        "symbol": "COIN",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "coinbase-xstock",
+          "symbol": "COINX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "coinbase-ondo-tokenized-stock",
+          "symbol": "COINON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "HOOD",
+      "file": "HOOD.json",
+      "stock": {
+        "symbol": "HOOD",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "robinhood-xstock",
+          "symbol": "HOODX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "robinhood-markets-ondo-tokenized-stock",
+          "symbol": "HOODON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "MSTR",
+      "file": "MSTR.json",
+      "stock": {
+        "symbol": "MSTR",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "microstrategy-xstock",
+          "symbol": "MSTRX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "microstrategy-ondo-tokenized-stock",
+          "symbol": "MSTRON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "CRCL",
+      "file": "CRCL.json",
+      "stock": {
+        "symbol": "CRCL",
+        "firstTime": "2025-06-05T13:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 2280
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "circle-xstock",
+          "symbol": "CRCLX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "circle-internet-group-ondo-tokenized-stock",
+          "symbol": "CRCLON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "SPY",
+      "file": "SPY.json",
+      "stock": {
+        "symbol": "SPY",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "sp500-xstock",
+          "symbol": "SPYX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "spdr-s-p-500-etf-ondo-tokenized-etf",
+          "symbol": "SPYON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "QQQ",
+      "file": "QQQ.json",
+      "stock": {
+        "symbol": "QQQ",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "nasdaq-xstock",
+          "symbol": "QQQX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "invesco-qqq-etf-ondo-tokenized-etf",
+          "symbol": "QQQON",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        }
+      ],
+      "errors": []
+    },
+    {
+      "ticker": "GLD",
+      "file": "GLD.json",
+      "stock": {
+        "symbol": "GLD",
+        "firstTime": "2024-09-25T14:30:00.000Z",
+        "lastTime": "2026-09-24T14:30:00.000Z",
+        "count": 3486
+      },
+      "tokens": [
+        {
+          "issuer": "xstock",
+          "id": "gold-xstock",
+          "symbol": "GLDX",
+          "firstTime": "2025-09-25T16:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 8736
+        },
+        {
+          "issuer": "ondo",
+          "id": "spdr-gold-shares-ondo-tokenized",
+          "symbol": "GLDON",
+          "firstTime": "2026-01-08T17:00:00.000Z",
+          "lastTime": "2026-09-24T15:00:00.000Z",
+          "count": 6072
+        }
+      ],
+      "errors": []
+    }
+  ]
+}
