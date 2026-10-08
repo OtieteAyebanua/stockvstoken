@@ -2,16 +2,9 @@
   "name": "solomon",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p web",
-    "fetch": "tsx src/index.ts",
-    "ui": "vite",
-    "ui:build": "vite build",
-    "gaps": "tsx src/gap-fill.ts"
+    "dev": "vite",
+    "fetch": "tsx src/index.ts"
   },
   "keywords": [],
   "author": "",
