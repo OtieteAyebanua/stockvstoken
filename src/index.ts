@@ -1,95 +1,149 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { alignSplits, dropSpikes } from "./clean.js";
-import { fetchTokenHistory, findTokens, type TokenHistory } from "./coingecko.js";
-import { fetchStockHistory, type StockHistory } from "./yahoo.js";
+// Fetch every 5-minute candle Alpaca has (since 2016) for the largest S&P 500 stocks that have listed
+// options, one JSON file per stock in data/. Stocks already fetched are skipped, so an interrupted
+// run picks up where it stopped.
+//
+//   npm run fetch                 the 100 largest (by market cap, from sp500.json)
+//   npm run fetch -- --top 200    the 200 largest
+//   npm run fetch -- AAPL TSLA    only these
+//   npm run fetch -- --force      fetch again even if the file exists
 
-// Stocks with live xStock and/or Ondo tokens. Override on the command line:
-//   npm run fetch -- AAPL TSLA NVDA
-const DEFAULT_TICKERS = [
-  "AAPL", "TSLA", "NVDA", "MSFT", "GOOGL", "AMZN", "META", "NFLX", "MCD", "MU",
-  "COIN", "HOOD", "MSTR", "CRCL", "SPY", "QQQ", "GLD",
-];
+import { readFile, rename, writeFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { fetchBars, optionableStocks } from "./alpaca.js";
+import { dailyCloses } from "./sessions.js";
 
 const OUT_DIR = "data";
+const TIMEFRAME = "5Min";
+/** Alpaca's stock history starts here. */
+const START = new Date("2016-01-01T00:00:00Z");
+/** The free plan can't query the latest 15 minutes of the full-market (SIP) feed. */
+const FREE_PLAN_DELAY_MS = 16 * 60_000;
+/** Stocks fetched at the same time. One stock alone can't use the whole rate limit, two nearly can. */
+const WORKERS = 2;
+/** How many of the largest stocks to fetch, unless --top or symbols are given. */
+const DEFAULT_TOP = 100;
 
 try {
   process.loadEnvFile();
 } catch {
-  // .env is optional
+  // .env is optional if the keys are set in the environment
+}
+if (!process.env.ALPACA_API_KEY_ID || !process.env.ALPACA_API_SECRET_KEY) {
+  console.error("Add your Alpaca keys to .env first:\n  ALPACA_API_KEY_ID=...\n  ALPACA_API_SECRET_KEY=...");
+  process.exit(1);
 }
 
-console.log(
-  process.env.COINGECKO_API_KEY
-    ? "CoinGecko: using Demo API key from .env"
-    : "CoinGecko: no API key (slow). Add COINGECKO_API_KEY=... to .env to speed up.",
-);
+interface Listing {
+  symbol: string;
+  name: string;
+  sector: string;
+  marketCap: number | null;
+  /** By market cap; null for a company's second share class (e.g. GOOG next to GOOGL). */
+  rank: number | null;
+}
 
-const args = process.argv.slice(2).map((t) => t.toUpperCase());
-const tickers = args.length ? args : DEFAULT_TICKERS;
+interface IndexEntry extends Listing {
+  file: string;
+  /** Latest and previous regular-session closes, for the watchlist's price and day change. */
+  lastClose: number | null;
+  prevClose: number | null;
+  count: number;
+  firstTime: string | null;
+  lastTime: string | null;
+  generatedAt: string;
+}
 
-console.log(`Looking up tokenized versions of ${tickers.length} tickers on CoinGecko...`);
-const tokensByTicker = await findTokens(tickers);
+const args = process.argv.slice(2);
+const force = args.includes("--force");
+const topAt = args.indexOf("--top");
+const top = topAt >= 0 ? Number(args[topAt + 1]) : DEFAULT_TOP;
+const only = args.filter((a, i) => !a.startsWith("--") && !(topAt >= 0 && i === topAt + 1)).map((a) => a.toUpperCase());
+
+const sp500 = JSON.parse(await readFile("sp500.json", "utf8")) as Listing[];
+const wanted = only.length
+  ? sp500.filter((s) => only.includes(s.symbol))
+  : sp500.filter((s) => s.rank != null && s.rank <= top).sort((a, b) => a.rank! - b.rank!);
+const unknown = only.filter((s) => !sp500.some((l) => l.symbol === s));
+if (unknown.length) console.warn(`Not in sp500.json, skipped: ${unknown.join(", ")}`);
+
+console.log("Checking which stocks have options on Alpaca...");
+const optionable = await optionableStocks();
+const stocks = wanted.filter((s) => optionable.has(s.symbol));
+const noOptions = wanted.filter((s) => !optionable.has(s.symbol));
+if (noOptions.length) console.log(`No options (or not on Alpaca), skipped: ${noOptions.map((s) => s.symbol).join(", ")}`);
+
+const end = new Date(Date.now() - FREE_PLAN_DELAY_MS);
+const start = START;
+console.log(`${stocks.length} stocks · ${TIMEFRAME} candles · ${start.toISOString().slice(0, 10)} → ${end.toISOString().slice(0, 16)}Z\n`);
+
 await mkdir(OUT_DIR, { recursive: true });
-
-const describe = ({ count, firstTime, lastTime }: StockHistory | TokenHistory) =>
-  `${count} hourly (${firstTime?.slice(0, 13)}h → ${lastTime?.slice(0, 13)}h)`;
-
-const summary = [];
-
-for (const ticker of tickers) {
-  console.log(`\n${ticker}`);
-  const errors: string[] = [];
-
-  let stock: StockHistory | null = null;
-  try {
-    stock = await fetchStockHistory(ticker);
-    console.log(`  stock  ${describe(stock)}`);
-  } catch (err) {
-    errors.push(`stock: ${(err as Error).message}`);
-    console.error(`  stock  failed: ${(err as Error).message}`);
-  }
-
-  const tokens: TokenHistory[] = [];
-  const matches = tokensByTicker.get(ticker) ?? [];
-  if (!matches.length) console.log("  tokens none listed on CoinGecko");
-  for (const { issuer, coin } of matches) {
-    try {
-      const token = await fetchTokenHistory(issuer, coin);
-      if (stock) {
-        // CoinGecko doesn't adjust token history for stock splits; put it on the stock's basis.
-        token.prices = dropSpikes(alignSplits(token.prices, stock.candles));
-        Object.assign(token, { count: token.prices.length, firstTime: token.prices[0]?.time ?? null, lastTime: token.prices.at(-1)?.time ?? null });
-      }
-      tokens.push(token);
-      console.log(`  ${issuer.padEnd(6)} ${describe(token)}  (${coin.id})`);
-    } catch (err) {
-      errors.push(`${issuer} (${coin.id}): ${(err as Error).message}`);
-      console.error(`  ${issuer.padEnd(6)} failed: ${(err as Error).message}`);
-    }
-  }
-
-  const file = `${ticker.replace(/\W/g, "-")}.json`;
-  await writeFile(
-    join(OUT_DIR, file),
-    JSON.stringify({ ticker, generatedAt: new Date().toISOString(), stock, tokens, errors }, null, 2),
+const indexPath = join(OUT_DIR, "index.json");
+const index = new Map<string, IndexEntry>(
+  existsSync(indexPath)
+    ? (JSON.parse(await readFile(indexPath, "utf8")) as { stocks: IndexEntry[] }).stocks.map((e) => [e.symbol, e])
+    : [],
+);
+const saveIndex = () =>
+  writeFile(
+    indexPath,
+    JSON.stringify({ timeframe: TIMEFRAME, generatedAt: new Date().toISOString(), stocks: [...index.values()].filter((e) => existsSync(join(OUT_DIR, e.file))).sort((a, b) => a.symbol.localeCompare(b.symbol)) }, null, 2),
   );
 
-  summary.push({
-    ticker,
-    file,
-    stock: stock && { symbol: stock.symbol, firstTime: stock.firstTime, lastTime: stock.lastTime, count: stock.count },
-    tokens: tokens.map(({ issuer, id, symbol, firstTime, lastTime, count }) => ({
-      issuer, id, symbol, firstTime, lastTime, count,
-    })),
-    errors,
-  });
+const fileFor = (symbol: string) => `${symbol.replace(/[^\w-]/g, "-")}.json`;
+const failed: string[] = [];
+const began = Date.now();
+let done = 0;
+
+async function fetchOne(i: number, stock: Listing) {
+  const file = fileFor(stock.symbol);
+  const path = join(OUT_DIR, file);
+  const label = `[${String(i + 1).padStart(3)}/${stocks.length}] ${stock.symbol.padEnd(6)}`;
+  if (!force && existsSync(path) && index.has(stock.symbol)) {
+    // Keep the name, sector and size up to date even when the bars aren't fetched again.
+    index.set(stock.symbol, { ...index.get(stock.symbol)!, ...stock });
+    console.log(`${label} already fetched, skipping`);
+    return;
+  }
+
+  try {
+    const bars = await fetchBars(stock.symbol, TIMEFRAME, start, end);
+    const generatedAt = new Date().toISOString();
+    const entry: IndexEntry = {
+      ...stock,
+      file,
+      ...dailyCloses(bars),
+      count: bars.length,
+      firstTime: bars[0]?.t ?? null,
+      lastTime: bars.at(-1)?.t ?? null,
+      generatedAt,
+    };
+    // Write to a temp file first so an interrupted run never leaves a half-written file behind.
+    await writeFile(`${path}.tmp`, JSON.stringify({ ...entry, timeframe: TIMEFRAME, feed: "sip", adjustment: "all", bars }));
+    await rename(`${path}.tmp`, path);
+    index.set(stock.symbol, entry);
+    await saveIndex();
+    done++;
+
+    const perStock = (Date.now() - began) / done;
+    const left = stocks.length - next;
+    console.log(`${label} ${bars.length.toLocaleString()} candles saved · ~${Math.ceil((perStock * left) / 60_000)} min left`);
+  } catch (err) {
+    failed.push(stock.symbol);
+    console.error(`${label} failed: ${(err as Error).message}`);
+  }
 }
 
-await writeFile(
-  join(OUT_DIR, "index.json"),
-  JSON.stringify({ generatedAt: new Date().toISOString(), tickers: summary }, null, 2),
+let next = 0;
+await Promise.all(
+  Array.from({ length: WORKERS }, async () => {
+    while (next < stocks.length) {
+      const i = next++;
+      await fetchOne(i, stocks[i]!);
+    }
+  }),
 );
 
-const failed = summary.filter((s) => s.errors.length).length;
-console.log(`\nWrote ${summary.length} files + index.json to ${OUT_DIR}/${failed ? ` (${failed} with errors)` : ""}`);
+await saveIndex();
+console.log(`\nDone: ${done} fetched, ${stocks.length - done - failed.length} already had, ${failed.length} failed${failed.length ? ` (${failed.join(", ")})` : ""}.`);
+if (failed.length) console.log("Run it again to retry the failed ones.");
